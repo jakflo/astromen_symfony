@@ -3,6 +3,7 @@
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Models\Db_wrap;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 class ExtendedController extends AbstractController {
     /**
@@ -26,8 +27,8 @@ class ExtendedController extends AbstractController {
         $this->db = $this->getDb();
     }
 
-    public function addParam(array $param) {
-        $this->params = array_merge($this->params, $param);
+    public function addParam(string $name, $value) {
+        $this->params[$name] = $value;
     }
     
     public function renderWithParams(string $twigPath) {
@@ -47,5 +48,10 @@ class ExtendedController extends AbstractController {
                 'astro'
                 );
         return $db;
+    }
+    
+    protected function createNamedFormBuilder(string $name, $data = null, array $options = [])
+    {
+        return $this->container->get('form.factory')->createNamedBuilder($name, FormType::class, $data, $options);
     }
 }

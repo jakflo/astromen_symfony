@@ -23,4 +23,22 @@
     {% else %}
         <p>Žádní astronauti se zatím nevyvinuli.</p>
     {% endif %}
+    <br />
+    
+    {% if add_form_validation_failed == false %}
+        <button class="button" id="show_add_astroman_form">Přidat nového astronauta</button>
+        {% set  new_astroman_form_hidden = 'hidden' %}
+    {% else %}
+        {% set new_astroman_form_hidden = '' %}
+    {% endif %}
+    
+    <div class="{{ new_astroman_form_hidden }}" id="new_astroman_form">
+        {{ form(addForm) }}
+    </div>
+    <br />
+    {{ form(editForm) }}
+    {% block javasripts %}
+        <script src="{{ webroot }}/js/homepage.js"></script>
+    {% endblock %}
+        
 {% endblock %}

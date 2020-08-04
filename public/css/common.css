@@ -7,7 +7,17 @@ table.normTab th, table.normTab td {
     text-align: center;
     font-size: 17px
 }
-table.normTab th {background-color: #4ddbff;}
-table.normTab tr:hover {background-color: #cccccc;}
-table.normTab tr.marked {background-color: #00cc44;}
+table.normTab th {
+    background-color: #4ddbff;
+}
+table.normTab tr:hover {
+    background-color: #cccccc;
+}
+table.normTab tr.marked {
+    background-color: #00cc44;
+}
+
+.hidden {
+    display: none;
+}
 

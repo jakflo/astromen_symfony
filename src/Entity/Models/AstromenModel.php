@@ -14,4 +14,8 @@ class AstromenModel extends Models {
         }
         return $data;
     }
+    
+    public function idExists(int $id) {
+        return $this->db->dotaz_hodnota('select count(*) from astro_tab where id=?', array($id)) > 0;
+    }
 }

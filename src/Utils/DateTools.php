@@ -15,4 +15,20 @@ class DateTools {
         $date = $this->enDateToCz($enDateArr[0], $withoutYear);
         return "{$date} {$enDateArr[1]}";
     }
+    
+    public function checkEnDate(string $date) {
+        $dateArr = explode('-', $date);
+        if (count($dateArr) !== 3) {
+            return false;
+        }
+        return checkdate($dateArr[1], $dateArr[2], $dateArr[0]);
+    }
+    
+    public function checkCzDate(string $date) {
+        $dateArr = explode('.', $date);
+        if (count($dateArr) !== 3) {
+            return false;
+        }
+        return checkdate($dateArr[1], $dateArr[0], $dateArr[2]);
+    }
 }
