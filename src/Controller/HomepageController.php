@@ -6,6 +6,8 @@ use App\Forms\DataObjects\AstromanAdd;
 use App\Forms\Makers\MakeAstromanAdd;
 use App\Forms\DataObjects\AstromanEdit;
 use App\Forms\Makers\MakeAstromanEdit;
+use App\Forms\DataObjects\AstromanDelete;
+use App\Forms\DataObjects\MakeAstromanDelete;
 use Symfony\Component\HttpFoundation\Request;
 
 class HomepageController extends ExtendedController {
@@ -15,6 +17,8 @@ class HomepageController extends ExtendedController {
         $makeAstromanAdd = new MakeAstromanAdd;
         $astromanEdit = new AstromanEdit($this->db);
         $makeAstromanEdit = new MakeAstromanEdit;
+        $astromanDelete = new AstromanDelete($this->db);
+        $makeAstromanDelete = new MakeAstromanDelete;
         
         $astromamAddForm = $makeAstromanAdd->make($this->createNamedFormBuilder('add', $astromanAdd))->getForm();
         $astromamAddForm->handleRequest($request);
@@ -24,6 +28,10 @@ class HomepageController extends ExtendedController {
         $astromamEditForm = $makeAstromanEdit->make($this->createNamedFormBuilder('edit', $astromanEdit))->getForm();
         $astromamEditForm->handleRequest($request);
         $this->addParam('editForm', $astromamEditForm->createView());
+        
+        $astromamDeleteForm = $makeAstromanDelete->make($this->createNamedFormBuilder('delete', $astromanDelete))->getForm();
+        $astromamDeleteForm->handleRequest($request);
+        $this->addParam('deleteForm', $astromamDeleteForm->createView());
         
         if ($astromamAddForm->isSubmitted()) {
             if ($astromamAddForm->isValid()) {
