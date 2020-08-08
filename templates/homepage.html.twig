@@ -2,6 +2,8 @@
 
 {% block body %}
     <h1>Seznam astronautů</h1>
+    {{ include('showFormsErrors.html.twig', {form: editForm}) }}
+    {{ include('showFormsErrors.html.twig', {form: deleteForm}) }}
     {% if astromenData %}
         <table class="normTab">
             <tr>
@@ -13,7 +15,7 @@
                     <td>{{ astroRow.l_name }}</td>
                     <td>{{ astroRow.DOB }}</td>
                     <td>{{ astroRow.skill }}</td>
-                    <td>
+                    <td class="button_cell">
                         <button class="astro_edit" data-id="{{ astroRow.id }}" type="button">upravit</button>
                         <button class="astro_delete" data-id="{{ astroRow.id }}" type="button">smazat</button>
                     </td>
@@ -24,6 +26,9 @@
         <p>Žádní astronauti se zatím nevyvinuli.</p>
     {% endif %}
     <br />
+    
+    {% form_theme editForm 'forms/formTabThemeOneRow.html.twig' %}
+    {% form_theme deleteForm 'forms/formTabThemeOneRow.html.twig' %}
     
     {% if add_form_validation_failed == false %}
         <button class="button" id="show_add_astroman_form">Přidat nového astronauta</button>
@@ -39,7 +44,7 @@
     {{ form(editForm) }}
     <br />
     {{ form(deleteForm) }}
-    
+
     {% block javasripts %}
         <script src="{{ webroot }}/js/homepage.js"></script>
     {% endblock %}

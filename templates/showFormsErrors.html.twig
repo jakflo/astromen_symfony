@@ -1,0 +1,9 @@
+{% set errors = getFormErrors(form) %}
+{% if errors|length > 0 %}
+    <ul class="form_errors">
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
