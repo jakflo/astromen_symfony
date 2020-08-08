@@ -16,6 +16,12 @@ class DateTools {
         return "{$date} {$enDateArr[1]}";
     }
     
+    public function czDateToEn(string $czDate) {
+        $czDateArray = explode('.', $czDate);
+        $enDate = "{$czDateArray[2]}-{$czDateArray[1]}-{$czDateArray[0]}";
+        return date('Y-m-d', strtotime($enDate));
+    }
+    
     public function checkEnDate(string $date) {
         $dateArr = explode('-', $date);
         if (count($dateArr) !== 3) {

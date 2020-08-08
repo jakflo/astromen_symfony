@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class HomepageController extends ExtendedController {
     public function displayPage(Request $request) {
         $model = new AstromenModel($this->db);
-        $astromanAdd = new AstromanAdd;
+        $astromanAdd = new AstromanAdd($this->db);
         $makeAstromanAdd = new MakeAstromanAdd;
         $astromanEdit = new AstromanEdit($this->db);
         $makeAstromanEdit = new MakeAstromanEdit;
