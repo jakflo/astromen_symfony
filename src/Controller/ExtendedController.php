@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Models\Db_wrap;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ExtendedController extends AbstractController {
     /**
@@ -38,6 +39,14 @@ class ExtendedController extends AbstractController {
     public function getWebroot() {
         $http = isset($_SERVER['HTTPS'])? 'https://' : 'http://';
         return $http.$_SERVER['HTTP_HOST'];
+    }
+    
+    public function addForm($formMaker, string $formName, $formDataObject, Request $request) {
+        $form = $formMaker->make($this->createNamedFormBuilder($formName, $formDataObject))->getForm();
+        $form->handleRequest($request);
+        $formName .= 'Form';
+        $this->addParam($formName, $form->createView());
+        return $form;        
     }
     
     protected function getDb() {

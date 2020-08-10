@@ -20,18 +20,12 @@ class HomepageController extends ExtendedController {
         $astromanDelete = new AstromanDelete($this->db);
         $makeAstromanDelete = new MakeAstromanDelete;
         
-        $astromamAddForm = $makeAstromanAdd->make($this->createNamedFormBuilder('add', $astromanAdd))->getForm();
-        $astromamAddForm->handleRequest($request);
-        $this->addParam('addForm', $astromamAddForm->createView());
-        $this->addParam('add_form_validation_failed', false);
-        
-        $astromamEditForm = $makeAstromanEdit->make($this->createNamedFormBuilder('edit', $astromanEdit))->getForm();
-        $astromamEditForm->handleRequest($request);
-        $this->addParam('editForm', $astromamEditForm->createView());
-        
-        $astromamDeleteForm = $makeAstromanDelete->make($this->createNamedFormBuilder('delete', $astromanDelete))->getForm();
-        $astromamDeleteForm->handleRequest($request);
-        $this->addParam('deleteForm', $astromamDeleteForm->createView());
+        $astromamAddForm = $this->addForm($makeAstromanAdd, 'add', $astromanAdd, $request);
+        $astromamEditForm = $this->addForm($makeAstromanEdit, 'edit', $astromanEdit, $request);
+        $astromamDeleteForm = $this->addForm($makeAstromanDelete, 'delete', $astromanDelete, $request);        
+
+        $this->addParam('add_form_validation_failed', false);        
+        $this->addParam('edit_form_validation_failed_id', 0);
         
         if ($astromamAddForm->isSubmitted()) {
             if ($astromamAddForm->isValid()) {
@@ -40,6 +34,17 @@ class HomepageController extends ExtendedController {
             else {
                 $this->addParam('add_form_validation_failed', true);
             }
+        }
+        if ($astromamEditForm->isSubmitted()) {
+            if ($astromamEditForm->isValid()) {
+                
+            }
+            else {
+                $this->addParam('edit_form_validation_failed_id', $astromanEdit->getId());
+            }
+        }
+        if ($astromamDeleteForm->isSubmitted() and $astromamDeleteForm->isValid()) {
+            
         }
         
         $astromen = $model->get_table();
