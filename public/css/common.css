@@ -26,3 +26,9 @@ span.form_error, ul.form_errors li {
     color: red;
 }
 
+tr.marked_edit {
+    background-color: #ffff00;    
+}
+tr.marked_delete {
+    background-color: #ff4d4d;    
+}
