@@ -32,3 +32,14 @@ tr.marked_edit {
 tr.marked_delete {
     background-color: #ff4d4d;    
 }
+
+ul.flash {
+    list-style-type: none;
+    padding: 0;
+}
+ul.flash li {
+    font-weight: bold;        
+}
+ul.flash.notice li {
+    color: blue;
+}

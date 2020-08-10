@@ -3,6 +3,7 @@
 {% block body %}
     <h1>Seznam astronautů</h1>
     {{ include('showFormsErrors.html.twig', {form: deleteForm}) }}
+    {% include('showFlashes.twig') with {flashType: 'notice', className: 'notice'} %}
     {% if astromenData %}
         <table class="normTab" id="astromen_table">
             <tr>
