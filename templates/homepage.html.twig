@@ -2,19 +2,18 @@
 
 {% block body %}
     <h1>Seznam astronautů</h1>
-    {{ include('showFormsErrors.html.twig', {form: editForm}) }}
     {{ include('showFormsErrors.html.twig', {form: deleteForm}) }}
     {% if astromenData %}
-        <table class="normTab">
+        <table class="normTab" id="astromen_table">
             <tr>
                 <th>Jméno</th><th>Příjmení</th><th>Datum narození</th><th>Dovednost</th><th></th>
             </tr>
             {% for astroRow in astromenData %}
                 <tr class="astroRow" data-id="{{ astroRow.id }}">
-                    <td>{{ astroRow.f_name }}</td>
-                    <td>{{ astroRow.l_name }}</td>
-                    <td>{{ astroRow.DOB }}</td>
-                    <td>{{ astroRow.skill }}</td>
+                    <td data-name="edit_fName">{{ astroRow.f_name }}</td>
+                    <td data-name="edit_lName">{{ astroRow.l_name }}</td>
+                    <td data-name="edit_dob">{{ astroRow.DOB }}</td>
+                    <td data-name="edit_skill">{{ astroRow.skill }}</td>
                     <td class="button_cell">
                         <button class="astro_edit" data-id="{{ astroRow.id }}" type="button">upravit</button>
                         <button class="astro_delete" data-id="{{ astroRow.id }}" type="button">smazat</button>
@@ -27,9 +26,6 @@
     {% endif %}
     <br />
     
-    {% form_theme editForm 'forms/formTabThemeOneRow.html.twig' %}
-    {% form_theme deleteForm 'forms/formTabThemeOneRow.html.twig' %}
-    
     {% if add_form_validation_failed == false %}
         <button class="button" id="show_add_astroman_form">Přidat nového astronauta</button>
         {% set  new_astroman_form_hidden = 'hidden' %}
@@ -37,13 +33,22 @@
         {% set new_astroman_form_hidden = '' %}
     {% endif %}
     
-    <div class="{{ new_astroman_form_hidden }}" id="new_astroman_form">
+    <div class="form_wrap {{ new_astroman_form_hidden }}" id="new_astroman_form">
+        <span class="form_error">Přidání nového astronauta</span>
         {{ form(addForm) }}
     </div>
+    <br /><br />
+    <div class="form_wrap hidden" id="astroman_edit_form">
+        <span class="form_error">Editace astronauta <span class="form_error" id="edited_astroman_name"></span></span>
+        {{ form(editForm) }}
+    </div>    
     <br />
-    {{ form(editForm) }}
-    <br />
-    {{ form(deleteForm) }}
+    <div class="form_wrap hidden" id="astroman_delete_confirm_form">
+        <span class="form_error">Skutečně si přejete smazat astronauta <span class="form_error" id="deleted_astroman_name"></span>?</span>
+        {{ form(deleteForm) }}        
+    </div>
+    
+    <div id="edit_form_validation_failed_id" class="hidden">{{ edit_form_validation_failed_id }}</div>
 
     {% block javasripts %}
         <script src="{{ webroot }}/js/homepage.js"></script>
