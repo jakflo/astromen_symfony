@@ -2,6 +2,7 @@
 
 namespace App\Forms\DataObjects;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 use App\Forms\MyConstraints\CzDate;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -54,10 +55,13 @@ class AstromanAdd {
      public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('fName', new NotBlank(['message' => 'Zadejte jméno']));
+        $metadata->addPropertyConstraint('fName', new Length(['max' => 20, 'maxMessage' => 'Jméno může mít nanejvýš 20 znaků']));
         $metadata->addPropertyConstraint('lName', new NotBlank(['message' => 'Zadejte příjmení']));
+        $metadata->addPropertyConstraint('lName', new Length(['max' => 20, 'maxMessage' => 'Příjmení může mít nanejvýš 20 znaků']));
         $metadata->addPropertyConstraint('dob', new NotBlank(['message' => 'Zadejte datum narození']));
         $metadata->addPropertyConstraint('dob', new CzDate(['message' => 'Neplatné datum narození']));
         $metadata->addPropertyConstraint('skill', new NotBlank(['message' => 'Zadejte dovednost']));
+        $metadata->addPropertyConstraint('skill', new Length(['max' => 45, 'maxMessage' => 'Dovednost může mít nanejvýš 45 znaků']));
         $metadata->addGetterConstraint('nameNotUsedYet', new IsTrue(['message' => 'Tento astronaut již existuje']));
     }
     
