@@ -49,10 +49,9 @@
         {{ form(deleteForm) }}        
     </div>
     
-    <div id="edit_form_validation_failed_id" class="hidden">{{ edit_form_validation_failed_id }}</div>
+    <div id="edit_form_validation_failed_id" class="hidden">{{ edit_form_validation_failed_id }}</div>        
+{% endblock %}
 
-    {% block javasripts %}
-        <script src="{{ webroot }}/js/homepage.js"></script>
-    {% endblock %}
-        
+{% block javasripts %}
+    <script src="{{ webroot }}/js/homepage.js"></script>
 {% endblock %}
