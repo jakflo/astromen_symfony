@@ -29,7 +29,11 @@ class HomepageController extends ExtendedController {
         
         if ($astromamAddForm->isSubmitted()) {
             if ($astromamAddForm->isValid()) {
-                
+                $model->add(
+                        $astromanAdd->getFName(), $astromanAdd->getLName(), 
+                        $astromanAdd->getDob(), $astromanAdd->getSkill()
+                        );
+                return $this->reloadWithFlash("Astronaut {$astromanAdd->getFullName()} úspěšně přidán");
             }
             else {
                 $this->addParam('add_form_validation_failed', true);
@@ -37,18 +41,30 @@ class HomepageController extends ExtendedController {
         }
         if ($astromamEditForm->isSubmitted()) {
             if ($astromamEditForm->isValid()) {
-                
+                $model->edit(
+                        $astromanEdit->getId(), $astromanEdit->getFName(), 
+                        $astromanEdit->getLName(), $astromanEdit->getDob(), 
+                        $astromanEdit->getSkill()
+                        );
+                return $this->reloadWithFlash("Astronaut {$astromanEdit->getFullName()} úspěšně upraven");
             }
             else {
                 $this->addParam('edit_form_validation_failed_id', $astromanEdit->getId());
             }
         }
         if ($astromamDeleteForm->isSubmitted() and $astromamDeleteForm->isValid()) {
-            
+            $fullName = $model->getFullName($astromanDelete->getId());
+            $model->delete($astromanDelete->getId());
+            return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán");
         }
         
         $astromen = $model->get_table();
         $this->addParam('astromenData', $astromen);
         return $this->renderWithParams('homepage.html.twig');
+    }
+    
+    protected function reloadWithFlash(string $message) {
+        $this->addFlash('notice', $message);
+        return $this->redirect($this->getWebroot());        
     }
 }

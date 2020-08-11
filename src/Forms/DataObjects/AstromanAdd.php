@@ -38,7 +38,7 @@ class AstromanAdd {
     public function getSkill() {
     return $this->skill;
     }
-
+    
     public function setFName($fName) {
     $this->fName = $fName;
     }
@@ -50,6 +50,10 @@ class AstromanAdd {
     }
     public function setSkill($skill) {
     $this->skill = $skill;
+    }
+    
+    public function getFullName() {
+        return trim("{$this->fName} {$this->lName}");
     }
     
      public static function loadValidatorMetadata(ClassMetadata $metadata)
