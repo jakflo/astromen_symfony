@@ -1,23 +1,33 @@
 <?php
-
 namespace App\Controller;
-use App\Entity\Models\AstromenModel;
-use App\Forms\DataObjects\AstromanAdd;
+
 use App\Forms\Makers\MakeAstromanAdd;
-use App\Forms\DataObjects\AstromanEdit;
 use App\Forms\Makers\MakeAstromanEdit;
-use App\Forms\DataObjects\AstromanDelete;
 use App\Forms\DataObjects\MakeAstromanDelete;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class HomepageController extends ExtendedController {
-    public function displayPage(Request $request) {
-        $model = new AstromenModel($this->db);
-        $astromanAdd = new AstromanAdd($this->db);
+class HomepageController extends AbstractController 
+{
+    use ExtendedController;
+    
+    public function __construct(
+            protected \App\Models\AstromenModel $model, 
+            protected \App\Forms\DataObjects\DataObjectsFactory $data_objects_factory
+    )
+    {
+        
+    }
+    
+    public function displayPage(Request $request) 
+    {
+        $this->addParam('title', 'Astronuts');
+                
+        $astromanAdd = $this->data_objects_factory->createAstromanAdd();
         $makeAstromanAdd = new MakeAstromanAdd;
-        $astromanEdit = new AstromanEdit($this->db);
+        $astromanEdit = $this->data_objects_factory->createAstromanEdit();
         $makeAstromanEdit = new MakeAstromanEdit;
-        $astromanDelete = new AstromanDelete($this->db);
+        $astromanDelete = $this->data_objects_factory->createAstromanDelete();
         $makeAstromanDelete = new MakeAstromanDelete;
         
         $astromamAddForm = $this->addForm($makeAstromanAdd, 'add', $astromanAdd, $request);
@@ -29,7 +39,7 @@ class HomepageController extends ExtendedController {
         
         if ($astromamAddForm->isSubmitted()) {
             if ($astromamAddForm->isValid()) {
-                $model->add(
+                $this->model->add(
                         $astromanAdd->getFName(), $astromanAdd->getLName(), 
                         $astromanAdd->getDob(), $astromanAdd->getSkill()
                         );
@@ -41,7 +51,7 @@ class HomepageController extends ExtendedController {
         }
         if ($astromamEditForm->isSubmitted()) {
             if ($astromamEditForm->isValid()) {
-                $model->edit(
+                $this->model->edit(
                         $astromanEdit->getId(), $astromanEdit->getFName(), 
                         $astromanEdit->getLName(), $astromanEdit->getDob(), 
                         $astromanEdit->getSkill()
@@ -53,18 +63,17 @@ class HomepageController extends ExtendedController {
             }
         }
         if ($astromamDeleteForm->isSubmitted() and $astromamDeleteForm->isValid()) {
-            $fullName = $model->getFullName($astromanDelete->getId());
-            $model->delete($astromanDelete->getId());
+            $fullName = $this->model->getFullName($astromanDelete->getId());
+            $this->model->delete($astromanDelete->getId());
             return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán");
         }
         
-        $astromen = $model->get_table();
-        $this->addParam('astromenData', $astromen);
+        $this->addParam('astromenData', $this->model->getTable());
         return $this->renderWithParams('homepage.html.twig');
     }
     
     protected function reloadWithFlash(string $message) {
         $this->addFlash('notice', $message);
-        return $this->redirect($this->getWebroot());        
+        return $this->redirectToRoute('homepage');        
     }
 }

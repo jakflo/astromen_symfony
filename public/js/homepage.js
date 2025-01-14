@@ -25,9 +25,14 @@ $(function() {
             if ($(formCell).length > 0) {
                 var data = $(v).text();
                 var dataLen = data.length;
+                var dataName = $(v).attr('data-name');
                 if (dataLen > 18) {
                     $(formCell).attr('size', dataLen + 2);
                 }
+                if (dataName === 'edit_dob') {
+                    data = czDateToEnDate(data);
+                }
+                
                 $(formCell).val(data);
             }
         });        
@@ -65,6 +70,12 @@ $(function() {
         hideAll();
         $('#show_add_astroman_form').removeClass('hidden');
         return {id: id, trDom: trDom};        
+    }
+    
+    function czDateToEnDate(cz_date) {
+        var cz_date_array = cz_date.replace(' ', '').split('.');
+        var date = new Date(cz_date_array[2], cz_date_array[1] - 1, cz_date_array[0], 5, 0, 0);
+        return date.toISOString().split('T')[0];
     }
     
     function getAstromanName(trDom) {

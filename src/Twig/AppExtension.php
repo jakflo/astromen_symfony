@@ -3,7 +3,7 @@
 namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use App\Entity\Models\GetFormErrors;
+use App\Models\GetFormErrors;
 
 class AppExtension extends AbstractExtension {
     public function getFunctions()

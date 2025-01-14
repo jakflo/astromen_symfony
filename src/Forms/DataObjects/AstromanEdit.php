@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Forms\DataObjects;
-use App\Entity\Models\AstromenModel;
 use App\Utils\DateTools;
 
 class AstromanEdit extends AstromanAdd {
@@ -9,10 +8,10 @@ class AstromanEdit extends AstromanAdd {
     
     public function isNameNotUsedYet() {
         $dateTools = new DateTools;
-        if (empty($this->fName) or empty($this->lName) or empty($this->dob) or !$dateTools->checkCzDate($this->dob)) {
+        if (empty($this->fName) or empty($this->lName) or empty($this->dob)) {
             return true;
         }
-        $model = new AstromenModel($this->db);
+        $model = $this->astromen_model;
         return !$model->isNameExists($this->fName, $this->lName, $this->dob, $this->id);        
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Models;
+namespace App\Models;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormErrorIterator;
 

@@ -10,14 +10,14 @@
                 <th>Jméno</th><th>Příjmení</th><th>Datum narození</th><th>Dovednost</th><th></th>
             </tr>
             {% for astroRow in astromenData %}
-                <tr class="astroRow" data-id="{{ astroRow.id }}">
-                    <td data-name="edit_fName">{{ astroRow.f_name }}</td>
-                    <td data-name="edit_lName">{{ astroRow.l_name }}</td>
-                    <td data-name="edit_dob">{{ astroRow.DOB }}</td>
-                    <td data-name="edit_skill">{{ astroRow.skill }}</td>
+                <tr class="astroRow" data-id="{{ astroRow.getId() }}">
+                    <td data-name="edit_fName">{{ astroRow.getFName() }}</td>
+                    <td data-name="edit_lName">{{ astroRow.getLName() }}</td>
+                    <td data-name="edit_dob">{{ astroRow.getDOB().format('d. m. Y') }}</td>
+                    <td data-name="edit_skill">{{ astroRow.getSkill() }}</td>
                     <td class="button_cell">
-                        <button class="astro_edit" data-id="{{ astroRow.id }}" type="button">upravit</button>
-                        <button class="astro_delete" data-id="{{ astroRow.id }}" type="button">smazat</button>
+                        <button class="astro_edit" data-id="{{ astroRow.getId() }}" type="button">upravit</button>
+                        <button class="astro_delete" data-id="{{ astroRow.getId() }}" type="button">smazat</button>
                     </td>
                 </tr>
             {% endfor %}
@@ -53,5 +53,5 @@
 {% endblock %}
 
 {% block javasripts %}
-    <script src="{{ webroot }}/js/homepage.js"></script>
+    <script src="{{ asset('js/homepage.js') }}"></script>
 {% endblock %}
