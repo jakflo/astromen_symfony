@@ -62,7 +62,7 @@ class HomepageController extends AbstractController
                 $this->addParam('edit_form_validation_failed_id', $astromanEdit->getId());
             }
         }
-        if ($astromamDeleteForm->isSubmitted() and $astromamDeleteForm->isValid()) {
+        if ($astromamDeleteForm->isSubmitted() && $astromamDeleteForm->isValid()) {
             $fullName = $this->model->getFullName($astromanDelete->getId());
             $this->model->delete($astromanDelete->getId());
             return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán");

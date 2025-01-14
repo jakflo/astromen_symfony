@@ -6,7 +6,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class MakeAstromanEdit extends MakeAstromanAdd {
+class MakeAstromanEdit extends MakeAstromanAdd 
+{
     public function make(FormBuilderInterface $form) {
         $form->add('id', HiddenType::class, ['label' => 'id']);
         $form = parent::make($form);

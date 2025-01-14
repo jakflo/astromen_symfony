@@ -7,7 +7,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 
 class MakeAstromanCommon {
-    public function make(FormBuilderInterface $form) {
+    public function make(FormBuilderInterface $form) 
+    {
         return $form
                 ->add('fName', TextType::class, ['label' => 'Jméno'])
                 ->add('lName', TextType::class, ['label' => 'Příjmení'])
