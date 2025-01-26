@@ -1,56 +1,55 @@
-CREATE DATABASE  IF NOT EXISTS `astro` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci */;
-USE `astro`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
---
--- Host: localhost    Database: astro
--- ------------------------------------------------------
--- Server version	5.7.17-log
+-- Adminer 4.8.1 MySQL 8.0.31 dump
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
---
--- Table structure for table `astro_tab`
---
+CREATE DATABASE `astromen` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `astromen`;
 
 DROP TABLE IF EXISTS `astro_tab`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `astro_tab` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `f_name` varchar(20) COLLATE utf8_czech_ci NOT NULL,
-  `l_name` varchar(20) COLLATE utf8_czech_ci NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `f_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_czech_ci NOT NULL,
+  `l_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_czech_ci NOT NULL,
   `DOB` date NOT NULL,
-  `skill` varchar(45) COLLATE utf8_czech_ci NOT NULL,
+  `skill` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_czech_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_czech_ci;
 
---
--- Dumping data for table `astro_tab`
---
+INSERT INTO `astro_tab` (`id`, `f_name`, `l_name`, `DOB`, `skill`) VALUES
+(1,	'L<b>ajk</b>a',	'pes',	'1954-09-11',	'Nejdelší pobyt na oběžné dráze'),
+(2,	'Homer',	'Simpson',	'1961-05-11',	'Pojídání chipsů v beztížném stavu'),
+(9,	'Jurij',	'Gagarin',	'1934-03-09',	'Pěrvyj v kosmose');
 
-LOCK TABLES `astro_tab` WRITE;
-/*!40000 ALTER TABLE `astro_tab` DISABLE KEYS */;
-INSERT INTO `astro_tab` VALUES (1,'L<b>ajk</b>a','pes','1954-09-11','Nejdelší pobyt na oběžné dráze'),(2,'Homer','Simpson','1961-05-11','Pojídání chipsů v beztížném stavu'),(9,'Jurij','Gagarin','1934-03-09','Pěrvyj v kosmose');
-/*!40000 ALTER TABLE `astro_tab` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+DROP TABLE IF EXISTS `logger`;
+CREATE TABLE `logger` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `astro_tab_id` int unsigned NOT NULL,
+  `action_id` int unsigned NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `astro_tab_id` (`astro_tab_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+INSERT INTO `logger` (`id`, `astro_tab_id`, `action_id`, `date`) VALUES
+(1,	12,	3,	'2025-01-26 22:32:45'),
+(2,	12,	2,	'2025-01-26 22:34:30'),
+(3,	13,	1,	'2025-01-26 22:34:52'),
+(4,	13,	2,	'2025-01-26 22:35:03');
 
--- Dump completed on 2020-08-11 20:03:07
+DROP TABLE IF EXISTS `logger_action`;
+CREATE TABLE `logger_action` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `short_name` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `short_name` (`short_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+INSERT INTO `logger_action` (`id`, `short_name`) VALUES
+(1,	'added'),
+(2,	'deleted'),
+(3,	'updated');
+
+-- 2025-01-26 22:38:04

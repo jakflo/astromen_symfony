@@ -4,11 +4,14 @@ namespace App\Models;
 use App\Utils\DateTools;
 use Doctrine\ORM\EntityManagerInterface;
 use \App\Entity\AstroTab;
+use \App\Events\AstroTabChanged;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AstromenModel
 {
     public function __construct(
-        protected EntityManagerInterface $entityManager
+        protected EntityManagerInterface $entityManager, 
+        protected EventDispatcherInterface $dispatcher
     )
     {
         
@@ -65,6 +68,7 @@ class AstromenModel
                 ;
         $this->entityManager->persist($new_row);
         $this->entityManager->flush();
+        $this->logChange($new_row->getId(), AstroTabChanged::ADDED);
     }
     
     public function delete(int $id) 
@@ -72,6 +76,7 @@ class AstromenModel
         $row = $this->entityManager->getRepository(AstroTab::class)->findOneById($id);
         $this->entityManager->remove($row);
         $this->entityManager->flush();
+        $this->logChange($id, AstroTabChanged::DELETED);
     }
     
     public function edit(int $id, string $fName, string $lName, \DateTime $dob, string $skill) 
@@ -84,5 +89,12 @@ class AstromenModel
                 ->setSkill($skill)
                 ;
         $this->entityManager->flush();
+        $this->logChange($id, AstroTabChanged::UPDATED);
+    }
+    
+    protected function logChange(int $id, string $eventName)
+    {
+        $event = new AstroTabChanged($id);
+        $this->dispatcher->dispatch($event, $eventName);
     }
 }
