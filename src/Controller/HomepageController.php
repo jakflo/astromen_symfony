@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller;
 
-use App\Forms\Makers\MakeAstromanAdd;
-use App\Forms\Makers\MakeAstromanEdit;
-use App\Forms\DataObjects\MakeAstromanDelete;
+use App\Forms\Makers\AstromanAddForm;
+use App\Forms\Makers\AstromanEditForm;
+use App\Forms\Makers\AstromanDeleteForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -13,7 +13,7 @@ class HomepageController extends AbstractController
     
     public function __construct(
             protected \App\Models\AstromenModel $model, 
-            protected \App\Forms\DataObjects\DataObjectsFactory $data_objects_factory
+            protected \App\Forms\DataObjects\DataObjectsFactory $dataObjectsFactory
     )
     {
         
@@ -21,21 +21,26 @@ class HomepageController extends AbstractController
     
     public function displayPage(Request $request) 
     {
-        $this->addParam('title', 'Astronuts');
+        $this->addTemplateParameter('title', 'Astronuts');
                 
-        $astromanAdd = $this->data_objects_factory->createAstromanAdd();
-        $makeAstromanAdd = new MakeAstromanAdd;
-        $astromanEdit = $this->data_objects_factory->createAstromanEdit();
-        $makeAstromanEdit = new MakeAstromanEdit;
-        $astromanDelete = $this->data_objects_factory->createAstromanDelete();
-        $makeAstromanDelete = new MakeAstromanDelete;
+        $astromanAdd = $this->dataObjectsFactory->createAstromanAdd();
+        $astromamAddForm = $this->createForm(AstromanAddForm::class, $astromanAdd);
+        $astromamAddForm->handleRequest($request);
         
-        $astromamAddForm = $this->addForm($makeAstromanAdd, 'add', $astromanAdd, $request);
-        $astromamEditForm = $this->addForm($makeAstromanEdit, 'edit', $astromanEdit, $request);
-        $astromamDeleteForm = $this->addForm($makeAstromanDelete, 'delete', $astromanDelete, $request);        
+        $astromanEdit = $this->dataObjectsFactory->createAstromanEdit();
+        $astromamEditForm = $this->createForm(AstromanEditForm::class, $astromanEdit);
+        $astromamEditForm->handleRequest($request);
+        
+        $astromanDelete = $this->dataObjectsFactory->createAstromanDelete();
+        $astromamDeleteForm = $this->createForm(AstromanDeleteForm::class, $astromanDelete);
+        $astromamDeleteForm->handleRequest($request);
+        
+        $this->addTemplateParameter('addForm', $astromamAddForm->createView());
+        $this->addTemplateParameter('editForm', $astromamEditForm->createView());
+        $this->addTemplateParameter('deleteForm', $astromamDeleteForm->createView());
 
-        $this->addParam('add_form_validation_failed', false);        
-        $this->addParam('edit_form_validation_failed_id', 0);
+        $this->addTemplateParameter('add_form_validation_failed', false);        
+        $this->addTemplateParameter('edit_form_validation_failed_id', 0);
         
         if ($astromamAddForm->isSubmitted()) {
             if ($astromamAddForm->isValid()) {
@@ -46,7 +51,7 @@ class HomepageController extends AbstractController
                 return $this->reloadWithFlash("Astronaut {$astromanAdd->getFullName()} úspěšně přidán");
             }
             else {
-                $this->addParam('add_form_validation_failed', true);
+                $this->addTemplateParameter('add_form_validation_failed', true);
             }
         }
         if ($astromamEditForm->isSubmitted()) {
@@ -59,7 +64,7 @@ class HomepageController extends AbstractController
                 return $this->reloadWithFlash("Astronaut {$astromanEdit->getFullName()} úspěšně upraven");
             }
             else {
-                $this->addParam('edit_form_validation_failed_id', $astromanEdit->getId());
+                $this->addTemplateParameter('edit_form_validation_failed_id', $astromanEdit->getId());
             }
         }
         if ($astromamDeleteForm->isSubmitted() && $astromamDeleteForm->isValid()) {
@@ -68,8 +73,8 @@ class HomepageController extends AbstractController
             return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán");
         }
         
-        $this->addParam('astromenData', $this->model->getTable());
-        return $this->renderWithParams('homepage.html.twig');
+        $this->addTemplateParameter('astromenData', $this->model->getTable());
+        return $this->renderWithStoredParameters('homepage.html.twig');
     }
     
     protected function reloadWithFlash(string $message) {

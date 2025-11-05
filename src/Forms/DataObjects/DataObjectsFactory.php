@@ -4,10 +4,9 @@ namespace App\Forms\DataObjects;
 class DataObjectsFactory
 {
     public function __construct(
-//            protected \App\Models\AstromenModel $astromen_model, 
-            protected \App\Forms\DataObjects\AstromanAdd $astroman_add, 
-            protected \App\Forms\DataObjects\AstromanDelete $astroman_delete, 
-            protected \App\Forms\DataObjects\AstromanEdit $astroman_edit    
+            protected \App\Forms\DataObjects\AstromanAdd $astromanAdd, 
+            protected \App\Forms\DataObjects\AstromanDelete $astromanDelete, 
+            protected \App\Forms\DataObjects\AstromanEdit $astromanEdit    
     )
     {
         
@@ -15,17 +14,17 @@ class DataObjectsFactory
     
     public function createAstromanAdd(): \App\Forms\DataObjects\AstromanAdd
     {
-        return $this->astroman_add;
+        return $this->astromanAdd;
     }
     
     public function createAstromanDelete(): \App\Forms\DataObjects\AstromanDelete
     {
-        return $this->astroman_delete;
+        return $this->astromanDelete;
     }
     
     public function createAstromanEdit(): \App\Forms\DataObjects\AstromanEdit
     {
-        return $this->astroman_edit;
+        return $this->astromanEdit;
     }
     
 }

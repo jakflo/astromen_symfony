@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 
-use App\Utils\DateTools;
 use Doctrine\ORM\EntityManagerInterface;
 use \App\Entity\AstroTab;
 use \App\Events\AstroTabChanged;
@@ -36,7 +35,7 @@ class AstromenModel
     
     public function isNameExists(string $fName, string $lName, \DateTime $dob, int $id = 0) 
     {
-        $row_query = $this->entityManager->createQueryBuilder()
+    $rowQuery = $this->entityManager->createQueryBuilder()
                 ->addSelect('a')
                 ->from(AstroTab::class, 'a')
                 ->andWhere('a.f_name = :fName')
@@ -50,25 +49,25 @@ class AstromenModel
                 ;
         
         if ($id != 0 ) {
-            $row_query->andWhere('a.id != :id')->setParameter('id', $id);
+            $rowQuery->andWhere('a.id != :id')->setParameter('id', $id);
         }
         
-        $row = $row_query->getQuery()->getResult();
+        $row = $rowQuery->getQuery()->getResult();
         return count($row) > 0;
     }
     
     public function add(string $fName, string $lName, \DateTime $dob, string $skill) 
     {
-        $new_row = new AstroTab();
-        $new_row
+        $newRow = new AstroTab();
+        $newRow
                 ->setFName(trim($fName))
                 ->setLName(trim($lName))
                 ->setDOB($dob)
                 ->setSkill($skill)
                 ;
-        $this->entityManager->persist($new_row);
+        $this->entityManager->persist($newRow);
         $this->entityManager->flush();
-        $this->logChange($new_row->getId(), AstroTabChanged::ADDED);
+        $this->logChange($newRow->getId(), AstroTabChanged::ADDED);
     }
     
     public function delete(int $id) 

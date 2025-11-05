@@ -28,23 +28,23 @@
     <br />
     
     {% if add_form_validation_failed == false %}
-        <button class="button" id="show_add_astroman_form">Přidat nového astronauta</button>
+        <button class="button" id="show_add_astroman_form_button">Přidat nového astronauta</button>
         {% set  new_astroman_form_hidden = 'hidden' %}
     {% else %}
         {% set new_astroman_form_hidden = '' %}
     {% endif %}
     
-    <div class="form_wrap {{ new_astroman_form_hidden }}" id="new_astroman_form">
+    <div class="form_wrap {{ new_astroman_form_hidden }}" id="new_astroman_form_wrap">
         <span class="form_error">Přidání nového astronauta</span>
         {{ form(addForm) }}
     </div>
     <br /><br />
-    <div class="form_wrap hidden" id="astroman_edit_form">
+    <div class="form_wrap hidden" id="astroman_edit_form_wrap">
         <span class="form_error">Editace astronauta <span class="form_error" id="edited_astroman_name"></span></span>
         {{ form(editForm) }}
     </div>    
     <br />
-    <div class="form_wrap hidden" id="astroman_delete_confirm_form">
+    <div class="form_wrap hidden" id="astroman_delete_confirm_form_wrap">
         <span class="form_error">Skutečně si přejete smazat astronauta <span class="form_error" id="deleted_astroman_name"></span>?</span>
         {{ form(deleteForm) }}        
     </div>
