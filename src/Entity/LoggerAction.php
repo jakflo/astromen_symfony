@@ -5,23 +5,17 @@ namespace App\Entity;
 use App\Repository\LoggerActionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=LoggerActionRepository::class)
- * @ORM\Table("logger_action")
- */
+#[ORM\Entity(repositoryClass: LoggerActionRepository::class)]
+#[ORM\Table(name: "logger_action")]
 class LoggerAction
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=32)
-     */
-    private $short_name;
+    #[ORM\Column(type: "string", length: 32)]
+    private string $short_name;
 
     public function getId(): ?int
     {

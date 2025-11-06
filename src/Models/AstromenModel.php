@@ -5,6 +5,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use \App\Entity\AstroTab;
 use \App\Events\AstroTabChanged;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 
 class AstromenModel
 {
@@ -35,17 +37,19 @@ class AstromenModel
     
     public function isNameExists(string $fName, string $lName, \DateTime $dob, int $id = 0) 
     {
-    $rowQuery = $this->entityManager->createQueryBuilder()
+        $rowQuery = $this->entityManager->createQueryBuilder()
                 ->addSelect('a')
                 ->from(AstroTab::class, 'a')
                 ->andWhere('a.f_name = :fName')
                 ->andWhere('a.l_name = :lName')
                 ->andWhere('a.DOB = :dob')
-                ->setParameters([
-                    'fName' => trim($fName), 
-                    'lName' => trim($lName), 
-                    'dob' => $dob
-                ])
+                ->setParameters(
+                    new ArrayCollection([
+                        new Parameter('fName', trim($fName)), 
+                        new Parameter('lName', trim($lName)), 
+                        new Parameter('dob', $dob)
+                    ])
+                )
                 ;
         
         if ($id != 0 ) {

@@ -2,41 +2,29 @@
 
 namespace App\Entity;
 
+use \Doctrine\ORM\Mapping as ORM;
 use App\Repository\AstroTabRepository;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=AstroTabRepository::class)
- * @ORM\Table("astro_tab")
- */
+#[ORM\Entity(repositoryClass: AstroTabRepository::class)]
+#[ORM\Table(name: 'astro_tab')]
 class AstroTab
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $f_name;
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $f_name = null;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $l_name;
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $l_name = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $DOB;
+    #[ORM\Column(type: 'date')]
+    private ?\DateTime $DOB = null;
 
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
-    private $skill;
+    #[ORM\Column(type: 'string', length: 45)]
+    private ?string $skill = null;
 
     public function getId(): ?int
     {

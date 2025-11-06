@@ -5,39 +5,27 @@ namespace App\Entity;
 use App\Repository\LoggerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=LoggerRepository::class)
- * @ORM\Table("logger")
- */
+#[ORM\Entity(repositoryClass: LoggerRepository::class)]
+#[ORM\Table(name: "logger")]
 class Logger
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $astro_tab_id;
+    #[ORM\Column(type: "integer")]
+    private int $astro_tab_id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
+    #[ORM\Column(type: "datetime")]
+    private \DateTimeInterface $date;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $action_id;
+    #[ORM\Column(type: "integer")]
+    private int $action_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=LoggerAction::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $action;
+    #[ORM\ManyToOne(targetEntity: LoggerAction::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private LoggerAction $action;
 
     public function getId(): ?int
     {
