@@ -6,6 +6,7 @@ use App\Forms\Makers\AstromanEditForm;
 use App\Forms\Makers\AstromanDeleteForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomepageController extends AbstractController 
 {
@@ -13,14 +14,18 @@ class HomepageController extends AbstractController
     
     public function __construct(
             protected \App\Models\AstromenModel $model, 
-            protected \App\Forms\DataObjects\DataObjectsFactory $dataObjectsFactory
+            protected \App\Forms\DataObjects\DataObjectsFactory $dataObjectsFactory, 
+            protected \App\Factory\PaginatorFactory $paginatorFactory, 
+            protected \App\AppSettings $appSettings
     )
     {
         
     }
     
-    public function displayPage(Request $request) 
+    public function displayPage(Request $request): Response
     {
+        $currentPage = $request->query->getInt('page', 1);
+        
         $this->addTemplateParameter('title', 'Astronuts');
                 
         $astromanAdd = $this->dataObjectsFactory->createAstromanAdd();
@@ -47,8 +52,9 @@ class HomepageController extends AbstractController
                 $this->model->add(
                         $astromanAdd->getFName(), $astromanAdd->getLName(), 
                         $astromanAdd->getDob(), $astromanAdd->getSkill()
-                        );
-                return $this->reloadWithFlash("Astronaut {$astromanAdd->getFullName()} úspěšně přidán");
+                );
+                
+                return $this->reloadWithFlash("Astronaut {$astromanAdd->getFullName()} úspěšně přidán", ['page' => $this->getPagesCount()]);
             }
             else {
                 $this->addTemplateParameter('add_form_validation_failed', true);
@@ -61,7 +67,7 @@ class HomepageController extends AbstractController
                         $astromanEdit->getLName(), $astromanEdit->getDob(), 
                         $astromanEdit->getSkill()
                         );
-                return $this->reloadWithFlash("Astronaut {$astromanEdit->getFullName()} úspěšně upraven");
+                return $this->reloadWithFlash("Astronaut {$astromanEdit->getFullName()} úspěšně upraven", ['page' => $currentPage]);
             }
             else {
                 $this->addTemplateParameter('edit_form_validation_failed_id', $astromanEdit->getId());
@@ -70,15 +76,19 @@ class HomepageController extends AbstractController
         if ($astromamDeleteForm->isSubmitted() && $astromamDeleteForm->isValid()) {
             $fullName = $this->model->getFullName($astromanDelete->getId());
             $this->model->delete($astromanDelete->getId());
-            return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán");
+            $pagesCount = $this->getPagesCount();
+            $page = $pagesCount < $currentPage ? $pagesCount : $currentPage; //pokud smazu jedinou polozku na posledni strance, snizi se pocet stranek
+            return $this->reloadWithFlash("Astronaut {$fullName} úspěšně smazán", ['page' => $page]);
         }
         
-        $this->addTemplateParameter('astromenData', $this->model->getTable());
+        $this->addTemplateParameter('astromenData', $this->model->getTable($currentPage));
         return $this->renderWithStoredParameters('homepage.html.twig');
     }
     
-    protected function reloadWithFlash(string $message) {
-        $this->addFlash('notice', $message);
-        return $this->redirectToRoute('homepage');        
+    protected function getPagesCount(): int
+    {
+        $itemsCount = $this->model->getItemsCount();
+        return ceil($itemsCount / $this->appSettings->getItemsPerPage());
     }
+    
 }

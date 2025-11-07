@@ -2,9 +2,9 @@
 
 {% block body %}
     <h1>Seznam astronautů</h1>
-    {{ include('showFormsErrors.html.twig', {form: deleteForm}) }}
+    {% include('showFormsErrors.html.twig') with {form: deleteForm} %}
     {% include('showFlashes.twig') with {flashType: 'notice', className: 'notice'} %}
-    {% if astromenData %}
+    {% if astromenData|length > 0 %}
         <table class="normTab" id="astromen_table">
             <tr>
                 <th>Jméno</th><th>Příjmení</th><th>Datum narození</th><th>Dovednost</th><th></th>
@@ -22,6 +22,7 @@
                 </tr>
             {% endfor %}
         </table>
+        {% include('pagination.html.twig') with {pagination: astromenData} %}
     {% else %}
         <p>Žádní astronauti se zatím nevyvinuli.</p>
     {% endif %}
@@ -50,6 +51,10 @@
     </div>
     
     <div id="edit_form_validation_failed_id" class="hidden">{{ edit_form_validation_failed_id }}</div>        
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/paginator.css') }}">
 {% endblock %}
 
 {% block javasripts %}

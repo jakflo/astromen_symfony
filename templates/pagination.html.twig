@@ -1,0 +1,50 @@
+{# 
+pagination = instance \App\Models\Paginator 
+pocita s paginator.css
+#}
+
+{% set currentPage = pagination.getCurrentPage() %}
+{% set maxPage = pagination.getPagesCount() %}
+{% set totalItems = pagination.getItemsTotalCount() %}
+
+{# Výpočet rozsahu stránek (3 čísla kolem aktuální) #}
+{% if currentPage == 1 %}
+    {% set startPage = 1 %}
+{% elseif currentPage == maxPage and currentPage > 2 %}
+    {% set startPage = currentPage - 2 %}
+{% else %}
+    {% set startPage = currentPage - 1 %}
+{% endif %}
+
+{% set endPage = startPage + 2 %}
+{% if endPage > maxPage %}
+    {% set endPage = maxPage %}
+{% endif %}
+
+<p class="pagination-info">Nalezeno {{ totalItems }} položek</p>
+
+<div class="paginator">
+
+    {# << první stránka #}
+    {% if currentPage == 1 %}
+        <span class="disabled">&laquo;</span>
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': 1})) }}">&laquo;</a>
+    {% endif %}
+
+    {# čísla stránek #}
+    {% for p in startPage..endPage %}
+        {% if p == currentPage %}
+            <span class="current">{{ p }}</span>
+        {% else %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': p})) }}">{{ p }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {# ... a poslední stránka #}
+    {% if endPage < maxPage %}
+        <span class="dots">…</span>
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': maxPage})) }}">{{ maxPage }}</a>
+    {% endif %}
+
+</div>
