@@ -1,9 +1,8 @@
-{% set errors = form_errors(form) %}
-{% if errors|length > 0 %}
+{% if not form.vars.valid %}
     <ul class="form_errors">
-        {% for error in errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
+        {# Loop through every form item #}
+        {% for error in form.vars.errors %}            
+            <li>{{ error.message }}</li>
+        {%endfor%}
     </ul>
-{% endif %}
-
+{%endif%}
