@@ -13,6 +13,8 @@ class PaginatorFactory
     )
     {}
     
+    // jediny prinos tehle factory je automaticke nacteni items_per_page ze services.yaml
+    // potrebujes-li Paginator s jinym items_per_page, vytvor objekt Paginator bez factory
     public function create(
             Query|QueryBuilder $query, 
             int $curentPage, 

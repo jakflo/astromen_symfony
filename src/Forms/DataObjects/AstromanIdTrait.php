@@ -9,14 +9,14 @@ use App\Utils\StringTools;
 
 trait AstromanIdTrait 
 {
-    protected $id;
+    protected int $id;
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -28,14 +28,14 @@ trait AstromanIdTrait
         $metadata->addGetterConstraint('astromanExists', new IsTrue(['message' => 'Záznam nenalezen']));
     }
 
-    public function isAstromanExists()
+    public function isAstromanExists(): bool
     {
         $stringTools = new StringTools;
         if (!$stringTools->isInt($this->id)) {
             return true; //není-li $id int, nutné to podchytit jiným constrainem
         }
 
-        $model = $this->astromen_model;
+        $model = $this->astromenModel;
         return $model->idExists($this->id);
     }
 }

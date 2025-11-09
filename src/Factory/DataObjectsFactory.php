@@ -1,5 +1,5 @@
 <?php
-namespace App\Forms\DataObjects;
+namespace App\Factory;
 
 class DataObjectsFactory
 {
